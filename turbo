@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+if [[ `cat /sys/devices/system/cpu/intel_pstate/no_turbo` == "0" ]]
+then
+    echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
+    echo "TurboBoost Disabled"
+else
+    echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
+    echo "TurboBoost Enabled"
+fi
