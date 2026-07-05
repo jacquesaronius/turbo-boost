@@ -1,11 +1,24 @@
 #!/bin/bash
 set -e
 
-if [[ `cat /sys/devices/system/cpu/intel_pstate/no_turbo` == "0" ]]
+
+if [ -n "$1" ] && [ "$1" == "status" ]; then
+  if [[ `cat /sys/devices/system/cpu/intel_pstate/no_turbo` == "0" ]]
+  then
+    echo "TurboBoost is currently Enabled"
+  else
+    echo "TurboBoost is currently Disabled"
+  fi
+elif [ -n "$1" ] && [ "$1" != "status" ]
 then
+  echo "$1 is not a valid argument."
+else
+  if [[ `cat /sys/devices/system/cpu/intel_pstate/no_turbo` == "0" ]]
+  then
     echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
     echo "TurboBoost Disabled"
-else
+  else
     echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
     echo "TurboBoost Enabled"
+  fi
 fi
